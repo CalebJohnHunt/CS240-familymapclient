@@ -34,6 +34,16 @@ import result.RegisterResult;
 
 public class LoginFragment extends Fragment {
 
+    public interface Listener {
+        void notifyDone();
+    }
+
+    private Listener listener;
+
+    public void registerListener(Listener listener) {
+        this.listener = listener;
+    }
+
     private static final String AUTH_TOKEN_KEY         = "AuthTokenKey";
     private static final String PERSON_ID_KEY          = "PersonIDKey";
     private static final String SUCCESSFUL_SIGN_IN_KEY = "SuccessfulSignInKey";
@@ -58,7 +68,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        setup(view);
+        setUpFields(view);
 
         signIn.setOnClickListener(l -> {
             foo(true);
@@ -93,11 +103,14 @@ public class LoginFragment extends Fragment {
 
                             String eventsJSON = bundle.getString(EVENTS_ARRAY_KEY, "");
                             Event[]  events   = (Event[]) JSONHandler.jsonToObject(eventsJSON, Event[].class);
-                            cache.addEvents(events);
+                            cache.addEvents(personID, events);
                             Log.d("LoginFragment: getData", "Added events to the cache");
 
                             Person user = cache.getPersonByID(personID);
                             Toast.makeText(getContext(), user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
+
+                            if (listener != null)
+                                listener.notifyDone();
                         }
                     };
 
@@ -236,7 +249,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void setup(View view) {
+    private void setUpFields(View view) {
         serverHost = view.findViewById(R.id.loginServerHost);
         serverPort = view.findViewById(R.id.loginServerPort);
         username   = view.findViewById(R.id.loginUsername);

@@ -1,7 +1,11 @@
 package com.calebjhunt.familymap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.Event;
 import model.Person;
@@ -11,7 +15,9 @@ public class DataCache {
     private static final DataCache instance  = new DataCache();
 
     private final Map<String, Person> people = new HashMap<>();
-    private final Map<String, Event> events  = new HashMap<>();
+    private final Map<String, Event> eventIDToEvent = new HashMap<>();
+    private final Set<Event> events = new HashSet<>();
+    private final Map<String, List<Event>> personEvents = new HashMap<>();
 
     private DataCache() {}
 
@@ -35,9 +41,18 @@ public class DataCache {
         }
     }
 
-    public void addEvents(Event[] newEvents) {
+    public void addEvents(String personID, Event[] newEvents) {
+        List<Event> eventList;
         for (Event e : newEvents) {
-            events.put(e.getEventID(), e);
+            eventIDToEvent.put(e.getEventID(), e);
+            events.add(e);
+            if ((eventList = personEvents.get(personID)) != null) {
+                eventList.add(e);
+            } else {
+                eventList = new ArrayList<Event>();
+                eventList.add(e);
+                personEvents.put(personID, eventList);
+            }
         }
     }
 
@@ -46,14 +61,19 @@ public class DataCache {
     }
 
     public Event  getEventByID(String id) {
-        return events.get(id);
+        return eventIDToEvent.get(id);
     }
 
-//    Map<String, List<Event>> personEvents;
+    public Set<Event> getEvents() {
+        return events;
+    }
+
 //    Set<String> paternalAncestors;
 //    Set<String> maternalAncestors;
 
 //    Settings settings;
-//    List<Event> getPersonEvents(String id) { return null; }
+    public List<Event> getPersonEvents(String personID) {
+        return personEvents.get(personID);
+    }
 
 }

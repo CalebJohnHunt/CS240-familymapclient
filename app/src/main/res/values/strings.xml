@@ -14,4 +14,7 @@
     <string name="loginSignInButton">SIGN IN</string>
     <string name="loginRegisterButton">REGISTER</string>
 
+    <string name="fullName">%1$s %2$s</string>
+    <string name="mapEventDetailsFormatted">%1$s: %2$s, %3$s (%4$d)</string>
+
 </resources>

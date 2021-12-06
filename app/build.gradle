@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.calebjhunt.familymap"
-        minSdk 16
+        minSdk 19
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -34,7 +34,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation files('libs/shared.jar')
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation ("com.joanzapata.iconify:android-iconify:2.2.2") {
+        exclude group: "com.android.support"
+    }
+    implementation ("com.joanzapata.iconify:android-iconify-fontawesome:2.2.2") {
+        exclude group: "com.android.support"
+    }
 }
