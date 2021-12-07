@@ -15,6 +15,15 @@
     <string name="loginRegisterButton">REGISTER</string>
 
     <string name="fullName">%1$s %2$s</string>
-    <string name="mapEventDetailsFormatted">%1$s: %2$s, %3$s (%4$d)</string>
+    <string name="eventFormatted">%1$s: %2$s, %3$s (%4$d)</string>
+
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
+    <string name="lifeEventsTitle">LIFE EVENTS</string>
+    <string name="familyTitle">FAMILY</string>
 
 </resources>
