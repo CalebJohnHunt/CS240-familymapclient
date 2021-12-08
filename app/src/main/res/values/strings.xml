@@ -25,5 +25,12 @@
 
     <string name="lifeEventsTitle">LIFE EVENTS</string>
     <string name="familyTitle">FAMILY</string>
+    <string name="spouse">Spouse</string>
+    <string name="child">Child</string>
+    <string name="mother">Mother</string>
+    <string name="father">Father</string>
+
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
 
 </resources>

@@ -20,7 +20,12 @@
         android:theme="@style/Theme.FamilyMap"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EventActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".PersonActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

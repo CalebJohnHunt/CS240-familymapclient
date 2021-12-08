@@ -1,11 +1,15 @@
 package com.calebjhunt.familymap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -26,6 +30,8 @@ public class PersonActivity extends AppCompatActivity {
 
     private final DataCache cache = DataCache.getInstance();
 
+    protected Person person;
+
     public static final String PERSON_KEY = "PERSON_KEY";
 
     @Override
@@ -43,9 +49,21 @@ public class PersonActivity extends AppCompatActivity {
         expandableListView.setAdapter(new ExpandableListAdapter(cache.getFamily(personID), cache.getPersonEvents(personID)));
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
+        return true;
+    }
+
     private void initializePersonDetails(String personID) {
 
-        Person person = cache.getPersonByID(personID);
+        this.person = cache.getPersonByID(personID);
 
         TextView firstNameView = findViewById(R.id.personFirstName);
         TextView lastNameView  = findViewById(R.id.personLastName);
@@ -164,7 +182,7 @@ public class PersonActivity extends AppCompatActivity {
 
             switch (groupPosition) {
                 case PEOPLE_GROUP_POSITION:
-                    initializeWithPerson(itemView, icon, topText, parent, childPosition);
+                    initializeWithPerson(itemView, icon, topText, bottomText, parent, childPosition);
 
                     break;
                 case EVENTS_GROUP_POSITION:
@@ -177,11 +195,12 @@ public class PersonActivity extends AppCompatActivity {
             return itemView;
         }
 
-        private void initializeWithPerson(View itemView, ImageView icon, TextView topText, ViewGroup parent, int childPosition) {
+        private void initializeWithPerson(View itemView, ImageView icon, TextView topText, TextView bottomText, ViewGroup parent, int childPosition) {
             FontAwesomeIcons genderType;
             int genderColor;
-            Person person = this.people.get(childPosition);
-            if (person.getGender().equals("m")) {
+            Integer relationshipID = null;
+            Person listedPerson = this.people.get(childPosition);
+            if (listedPerson.getGender().equals("m")) {
                 genderType = FontAwesomeIcons.fa_male;
                 genderColor = R.color.male_icon;
             } else {
@@ -189,17 +208,31 @@ public class PersonActivity extends AppCompatActivity {
                 genderColor = R.color.female_icon;
             }
 
+            if (listedPerson.getSpouseID() != null && listedPerson.getSpouseID().equals(person.getPersonID())) {
+                relationshipID = R.string.spouse;
+            } else if (listedPerson.getFatherID() != null && listedPerson.getFatherID().equals(person.getPersonID()) ||
+                    listedPerson.getMotherID() != null && listedPerson.getMotherID().equals(person.getPersonID())) {
+                relationshipID = R.string.child;
+            } else if (person.getFatherID() != null && person.getFatherID().equals(listedPerson.getPersonID())) {
+                relationshipID = R.string.father;
+            } else if (person.getMotherID() != null && person.getMotherID().equals(listedPerson.getPersonID())) {
+                relationshipID = R.string.mother;
+            }
+
+            if (relationshipID != null)
+                bottomText.setText(getString(relationshipID));
+            topText.setText(getString(R.string.fullName, listedPerson.getFirstName(), listedPerson.getLastName()));
+
             Drawable d = new IconDrawable(parent.getContext(), genderType).colorRes(genderColor).sizeDp(40);
             icon.setImageDrawable(d);
 
-            topText.setText(getString(R.string.fullName, person.getFirstName(), person.getLastName()));
 
             // TODO: Add onClickListener
             itemView.setOnClickListener(v -> {
                 Log.v("PersonAct:Person_Item", "Clicked a person item!");
                 Intent intent = new Intent(parent.getContext(), PersonActivity.class);
 
-                intent.putExtra(PERSON_KEY, person.getPersonID());
+                intent.putExtra(PERSON_KEY, listedPerson.getPersonID());
                 startActivity(intent);
             });
         }
@@ -219,9 +252,9 @@ public class PersonActivity extends AppCompatActivity {
             // TODO: Add onClickListener
             itemView.setOnClickListener(v -> {
                 Log.v("PersonAct:Event_Item", "Clicked an event item!");
-//                Intent intent = new Intent(parent.getContext(), EventActivity.class);
-//                intent.putExtra(EventActivity.EVENT_KEY, event.getEventID());
-//                startActivity(intent);
+                Intent intent = new Intent(parent.getContext(), EventActivity.class);
+                intent.putExtra(EventActivity.EVENT_KEY, event.getEventID());
+                startActivity(intent);
             });
         }
 

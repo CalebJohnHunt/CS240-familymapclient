@@ -1,6 +1,8 @@
 package com.calebjhunt.familymap;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,13 +22,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragmentFrameLayout);
+        Fragment fragment = fm.findFragmentById(R.id.mainFragmentFrameLayout);
 
         if (fragment == null) {
             fragment = createLoginFragment();
 
             fm.beginTransaction()
-                    .add(R.id.fragmentFrameLayout, fragment)
+                    .add(R.id.mainFragmentFrameLayout, fragment)
                     .commit();
         } else {
             if (fragment instanceof LoginFragment) {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         Fragment fragment = new MapsFragment();
 
         fm.beginTransaction()
-                .replace(R.id.fragmentFrameLayout, fragment)
+                .replace(R.id.mainFragmentFrameLayout, fragment)
                 .commit();
     }
 }

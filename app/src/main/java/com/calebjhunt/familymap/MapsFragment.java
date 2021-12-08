@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -108,6 +111,8 @@ public class MapsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
+        setHasOptionsMenu(true);
+
         setUpFields(view);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -116,6 +121,27 @@ public class MapsFragment extends Fragment {
         mapFragment.getMapAsync(callback);
 
         return view;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        // The only time we want the search and options menu is on the main activity maps
+        if (getActivity() instanceof MainActivity) {
+            inflater.inflate(R.menu.main_menu, menu);
+            MenuItem search   = menu.findItem(R.id.search);
+            MenuItem settings = menu.findItem(R.id.settings);
+
+            search.setIcon(new IconDrawable(getActivity(), FontAwesomeIcons.fa_search)
+                    .colorRes(R.color.white)
+                    .actionBarSize())
+
+            settings.setIcon(new IconDrawable(getActivity(), FontAwesomeIcons.fa_cog)
+                    .colorRes(R.color.white)
+                    .actionBarSize());
+        }
     }
 
     @Override
