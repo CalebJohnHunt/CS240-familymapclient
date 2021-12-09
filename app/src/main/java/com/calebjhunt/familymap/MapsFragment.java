@@ -55,6 +55,7 @@ public class MapsFragment extends Fragment {
     private LinearLayout mapText;
 
     private Person selectedEventPerson = null;
+    private String selectedEventID;
 
 
     private final DataCache cache = DataCache.getInstance();
@@ -63,8 +64,8 @@ public class MapsFragment extends Fragment {
     private static final float MARKER_HUE_STEP = 30f;
     private static float currentMarkerHue = MARKER_HUE_START;
     private static final int ANCESTOR_LINE_WEIGHT_MIN = 1;
-    private static final int STARTING_ANCESTOR_LINE_WEIGHT = 15;
-    private static final int ANCESTOR_LINE_WEIGHT_STEP = 3;
+    private static final int STARTING_ANCESTOR_LINE_WEIGHT = 20;
+    private static final int ANCESTOR_LINE_WEIGHT_STEP = 2;
     private static final int GENERIC_LINE_WEIGHT = 10;
 
     private final GoogleMap.OnMarkerClickListener markerClickListener = marker -> {
@@ -159,6 +160,7 @@ public class MapsFragment extends Fragment {
                     gMap.clear();
 
                 addMarkers(null);
+                selectEvent(cache.getEventByID(selectedEventID));
             }
         }
     }
@@ -176,10 +178,12 @@ public class MapsFragment extends Fragment {
     }
 
     private void selectEvent(Event event) {
+        if (event == null)
+            return;
         clearLines();
 
         this.selectedEventPerson = cache.getPersonByID(event.getPersonID());
-
+        this.selectedEventID = event.getEventID();
         LatLng location = new LatLng(event.getLatitude(), event.getLongitude());
         gMap.animateCamera(CameraUpdateFactory.newLatLng(location));
         updateEventDetails(event);
@@ -240,14 +244,14 @@ public class MapsFragment extends Fragment {
             Event fatherEvent = cache.findEarliestFilteredEvent(person.getFatherID());
             if (fatherEvent != null) {
                 drawAncestorLine(event, fatherEvent, weight);
-                drawFamilyTreeLines(fatherEvent, cache.getPersonByID(person.getFatherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight - ANCESTOR_LINE_WEIGHT_STEP));
+                drawFamilyTreeLines(fatherEvent, cache.getPersonByID(person.getFatherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight / ANCESTOR_LINE_WEIGHT_STEP));
             }
         }
         if (person.getMotherID() != null) {
             Event motherEvent = cache.findEarliestFilteredEvent(person.getMotherID());
             if (motherEvent != null) {
                 drawAncestorLine(event, motherEvent, weight);
-                drawFamilyTreeLines(motherEvent, cache.getPersonByID(person.getMotherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight - ANCESTOR_LINE_WEIGHT_STEP));
+                drawFamilyTreeLines(motherEvent, cache.getPersonByID(person.getMotherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight / ANCESTOR_LINE_WEIGHT_STEP));
             }
         }
     }

@@ -77,8 +77,8 @@ public class PersonActivity extends AppCompatActivity {
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-        private static final int PEOPLE_GROUP_POSITION = 0;
-        private static final int EVENTS_GROUP_POSITION = 1;
+        private static final int EVENTS_GROUP_POSITION = 0;
+        private static final int PEOPLE_GROUP_POSITION = 1;
 
         private final List<Person> people;
         private final List<Event>  events;
