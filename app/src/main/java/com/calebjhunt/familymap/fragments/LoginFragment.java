@@ -1,4 +1,4 @@
-package com.calebjhunt.familymap;
+package com.calebjhunt.familymap.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +16,10 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import com.calebjhunt.familymap.DataCache;
+import com.calebjhunt.familymap.R;
+import com.calebjhunt.familymap.ServerProxy;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

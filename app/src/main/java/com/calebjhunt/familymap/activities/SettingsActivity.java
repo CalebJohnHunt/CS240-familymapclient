@@ -1,4 +1,4 @@
-package com.calebjhunt.familymap;
+package com.calebjhunt.familymap.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+
+import com.calebjhunt.familymap.DataCache;
+import com.calebjhunt.familymap.fragments.MapsFragment;
+import com.calebjhunt.familymap.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.calebjhunt.familymap;
+package com.calebjhunt.familymap.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.calebjhunt.familymap.DataCache;
+import com.calebjhunt.familymap.R;
+import com.calebjhunt.familymap.activities.MainActivity;
+import com.calebjhunt.familymap.activities.PersonActivity;
+import com.calebjhunt.familymap.activities.SearchActivity;
+import com.calebjhunt.familymap.activities.SettingsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

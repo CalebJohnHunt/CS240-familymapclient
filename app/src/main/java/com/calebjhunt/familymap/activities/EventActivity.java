@@ -1,4 +1,4 @@
-package com.calebjhunt.familymap;
+package com.calebjhunt.familymap.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.calebjhunt.familymap.fragments.MapsFragment;
+import com.calebjhunt.familymap.R;
 
 public class EventActivity extends AppCompatActivity {
 

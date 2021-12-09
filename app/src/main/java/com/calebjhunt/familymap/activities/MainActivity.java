@@ -1,13 +1,14 @@
-package com.calebjhunt.familymap;
+package com.calebjhunt.familymap.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.calebjhunt.familymap.fragments.LoginFragment;
+import com.calebjhunt.familymap.fragments.MapsFragment;
+import com.calebjhunt.familymap.R;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
