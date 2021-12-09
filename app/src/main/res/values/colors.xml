@@ -6,14 +6,14 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="grey51">#FF515151</color>
+    <color name="greyAA">#FFAAAAAA</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFEE3311</color>
 
     <color name="male_icon">#FF3366FF</color>
     <color name="female_icon">#FFFF1199</color>
 
-    <color name="spouse_line">#FFDEADBE</color>
+    <color name="spouse_line">#FFFF33FF</color>
     <color name="ancestor_line">#FFFF9900</color>
-    <color name="life_story_line">#FF515151</color>
+    <color name="life_story_line">#FF4AFF7A</color>
 </resources>

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/personFirstName"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey51"/>
+            android:background="@color/greyAA"/>
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +47,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey51"/>
+            android:background="@color/greyAA"/>
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +68,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey51"/>
+            android:background="@color/greyAA"/>
     </LinearLayout>
 
     <ExpandableListView

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
+
+    <RelativeLayout
+        android:id="@+id/settingsLifeStory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:id="@+id/settingsLifeStoryTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsLifeStoryTopText" />
+
+        <TextView
+            android:id="@+id/settingsLifeStoryBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsLifeStoryTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsLifeStoryBottomText" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsLifeStorySwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+    
+    <RelativeLayout
+        android:id="@+id/settingsFamilyTree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsFamilyTreeTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsFamilyTreeTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsFamilyTreeBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsFamilyTreeTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsFamilyTreeBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsFamilyTreeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsSpouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsSpouseTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsSpouseTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsSpouseBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsSpouseTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsSpouseBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsSpouseSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsFather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsFatherTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsFatherTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsFatherBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsFatherTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsFatherBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsFatherSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsMother"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsMotherTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsMotherTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsMotherBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsMotherTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsMotherBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsMotherSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsMale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsMaleTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsMaleTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsMaleBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsMaleTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsMaleBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsMaleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsFemale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp">
+
+
+        <TextView
+            android:id="@+id/settingsFemaleTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsFemaleTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsFemaleBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsFemaleTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsFemaleBottomText"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settingsFemaleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+    <RelativeLayout
+        android:id="@+id/settingsLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+
+        <TextView
+            android:id="@+id/settingsLogoutTopText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:text="@string/settingsLogoutTopText"
+            />
+
+        <TextView
+            android:id="@+id/settingsLogoutBottomText"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsLogoutTopText"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:text="@string/settingsLogoutBottomText"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyAA"/>
+
+</LinearLayout>

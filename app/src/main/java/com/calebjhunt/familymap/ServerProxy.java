@@ -159,7 +159,7 @@ public class ServerProxy {
 
     /*
      * clear
-     * laod
+     * load
      * fill
      * I'm sure there are more
      */

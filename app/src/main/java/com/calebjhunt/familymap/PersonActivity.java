@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +44,7 @@ public class PersonActivity extends AppCompatActivity {
 
         ExpandableListView expandableListView = findViewById(R.id.personExpandableList);
 
-        expandableListView.setAdapter(new ExpandableListAdapter(cache.getFamily(personID), cache.getPersonEvents(personID)));
+        expandableListView.setAdapter(new ExpandableListAdapter(cache.getFamily(personID), cache.getFilteredPersonEvents(personID)));
     }
 
     @Override
@@ -173,11 +171,11 @@ public class PersonActivity extends AppCompatActivity {
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            View itemView = getLayoutInflater().inflate(R.layout.person_list_item, parent, false);
+            View itemView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
 
-            ImageView icon = itemView.findViewById(R.id.personListItemIcon);
-            TextView  topText = itemView.findViewById(R.id.personListItemTopText);
-            TextView  bottomText = itemView.findViewById(R.id.personListItemBottomText);
+            ImageView icon = itemView.findViewById(R.id.listItemIcon);
+            TextView  topText = itemView.findViewById(R.id.listItemTopText);
+            TextView  bottomText = itemView.findViewById(R.id.listItemBottomText);
 
 
             switch (groupPosition) {
@@ -198,7 +196,7 @@ public class PersonActivity extends AppCompatActivity {
         private void initializeWithPerson(View itemView, ImageView icon, TextView topText, TextView bottomText, ViewGroup parent, int childPosition) {
             FontAwesomeIcons genderType;
             int genderColor;
-            Integer relationshipID = null;
+            Integer relationship = null;
             Person listedPerson = this.people.get(childPosition);
             if (listedPerson.getGender().equals("m")) {
                 genderType = FontAwesomeIcons.fa_male;
@@ -209,25 +207,24 @@ public class PersonActivity extends AppCompatActivity {
             }
 
             if (listedPerson.getSpouseID() != null && listedPerson.getSpouseID().equals(person.getPersonID())) {
-                relationshipID = R.string.spouse;
+                relationship = R.string.spouse;
             } else if (listedPerson.getFatherID() != null && listedPerson.getFatherID().equals(person.getPersonID()) ||
                     listedPerson.getMotherID() != null && listedPerson.getMotherID().equals(person.getPersonID())) {
-                relationshipID = R.string.child;
+                relationship = R.string.child;
             } else if (person.getFatherID() != null && person.getFatherID().equals(listedPerson.getPersonID())) {
-                relationshipID = R.string.father;
+                relationship = R.string.father;
             } else if (person.getMotherID() != null && person.getMotherID().equals(listedPerson.getPersonID())) {
-                relationshipID = R.string.mother;
+                relationship = R.string.mother;
             }
 
-            if (relationshipID != null)
-                bottomText.setText(getString(relationshipID));
+            if (relationship != null)
+                bottomText.setText(getString(relationship));
             topText.setText(getString(R.string.fullName, listedPerson.getFirstName(), listedPerson.getLastName()));
 
             Drawable d = new IconDrawable(parent.getContext(), genderType).colorRes(genderColor).sizeDp(40);
             icon.setImageDrawable(d);
 
 
-            // TODO: Add onClickListener
             itemView.setOnClickListener(v -> {
                 Log.v("PersonAct:Person_Item", "Clicked a person item!");
                 Intent intent = new Intent(parent.getContext(), PersonActivity.class);

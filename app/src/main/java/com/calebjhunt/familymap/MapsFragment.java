@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 import model.Event;
 import model.Person;
@@ -46,7 +46,8 @@ public class MapsFragment extends Fragment {
     private GoogleMap gMap;
     private final List<Polyline> curLines = new ArrayList<>();
 
-    public static final String ARG_EVENT_ID = "argEventID";
+    public  static final String ARG_EVENT_ID = "argEventID";
+    private static final int   RETURNING_FROM_SETTINGS = 0;
 
     private ImageView icon;
     private TextView  nameDetails;
@@ -57,46 +58,35 @@ public class MapsFragment extends Fragment {
 
 
     private final DataCache cache = DataCache.getInstance();
-    private final Map<String, Float> eventTypeToColor = new HashMap<String, Float>(){
-        {
-            put("death", BitmapDescriptorFactory.HUE_RED);
-            put("birth", BitmapDescriptorFactory.HUE_GREEN);
-            put("marriage", BitmapDescriptorFactory.HUE_BLUE);
-        }
-    };
-
-    private final GoogleMap.OnMapLoadedCallback loadedCallback = () -> {
-        // You probably don't need this callback. It occurs after onMapReady and I have seen
-        // cases where you get an error when adding markers or otherwise interacting with the map in
-        // onMapReady(...) because the map isn't really all the way ready. If you see that, just
-        // move all code where you interact with the map (everything after
-        // map.setOnMapLoadedCallback(...) above) to here.
-    };
+    private static final Map<String, Float> eventTypeToColor = new HashMap<>();
+    private static final float MARKER_HUE_START = 150f;
+    private static final float MARKER_HUE_STEP = 30f;
+    private static float currentMarkerHue = MARKER_HUE_START;
+    private static final int ANCESTOR_LINE_WEIGHT_MIN = 1;
+    private static final int STARTING_ANCESTOR_LINE_WEIGHT = 15;
+    private static final int ANCESTOR_LINE_WEIGHT_STEP = 3;
+    private static final int GENERIC_LINE_WEIGHT = 10;
 
     private final GoogleMap.OnMarkerClickListener markerClickListener = marker -> {
 
         Event event = (Event) marker.getTag();
-        assert event != null;
+        if (event != null)
+            selectEvent(event);
 
-        selectEvent(event);
-        // false = move to the marker and show info window (not sure what info window is)
         return false;
     };
 
     private final OnMapReadyCallback callback = googleMap -> {
-        googleMap.setOnMapLoadedCallback(loadedCallback);
-
         this.gMap = googleMap;
 
         googleMap.setOnMarkerClickListener(markerClickListener);
 
-        // TODO: The selected event should show up on the details TextView too!
         String selectedEventID;
         Bundle args = getArguments();
         if (args == null) {
             selectedEventID = null;
         } else {
-            // This could still be null if we give an argument for a different parameter
+            // This could still be null if we are given a meaningless argument
             selectedEventID = args.getString(ARG_EVENT_ID);
         }
 
@@ -116,9 +106,8 @@ public class MapsFragment extends Fragment {
         setUpFields(view);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        assert mapFragment != null;
-
-        mapFragment.getMapAsync(callback);
+        if (mapFragment != null)
+            mapFragment.getMapAsync(callback);
 
         return view;
     }
@@ -136,7 +125,7 @@ public class MapsFragment extends Fragment {
 
             search.setIcon(new IconDrawable(getActivity(), FontAwesomeIcons.fa_search)
                     .colorRes(R.color.white)
-                    .actionBarSize())
+                    .actionBarSize());
 
             settings.setIcon(new IconDrawable(getActivity(), FontAwesomeIcons.fa_cog)
                     .colorRes(R.color.white)
@@ -145,9 +134,45 @@ public class MapsFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.search) {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (item.getItemId() == R.id.settings) {
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            startActivityForResult(intent, RETURNING_FROM_SETTINGS);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RETURNING_FROM_SETTINGS) {
+                resetFragment();
+                if (gMap != null)
+                    gMap.clear();
+
+                addMarkers(null);
+            }
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
+    private void resetFragment() {
+        this.selectedEventPerson = null;
+        this.icon.setImageDrawable(null);
+        this.nameDetails.setText("");
+        this.eventDetails.setText("");
     }
 
     private void selectEvent(Event event) {
@@ -177,9 +202,14 @@ public class MapsFragment extends Fragment {
 
     private void drawLines(Event event) {
         Person person = cache.getPersonByID(event.getPersonID());
-        drawSpouseLine(event);
-        drawAncestorLines(event, person, 10);
-        drawLifeStoryLines();
+        if (cache.settings.isShowSpouseLines())
+            drawSpouseLine(event);
+
+        if (cache.settings.isShowFamilyTreeLines())
+        drawFamilyTreeLines(event, person, STARTING_ANCESTOR_LINE_WEIGHT);
+
+        if (cache.settings.isShowLifeStoryLines())
+            drawLifeStoryLines();
     }
 
     private void drawLifeStoryLines() {
@@ -188,31 +218,36 @@ public class MapsFragment extends Fragment {
         for (int i = 0; i < eventList.size()-1; ++i) {
             Event from = eventList.get(i);
             Event to   = eventList.get(i+1);
+
+            // If either event is not within filter, skip it
+            if (!(cache.isEventInFilter(from) &&cache.isEventInFilter(to)))
+                continue;
+
             LatLng start = new LatLng(from.getLatitude(), from.getLongitude());
             LatLng end   = new LatLng(to.getLatitude(), to.getLongitude());
             PolylineOptions options = new PolylineOptions()
                     .add(start)
                     .add(end)
                     .color(getResources().getColor(R.color.life_story_line))
-                    .width(Math.max(1, 10-i)); // Slight thinning as time goes on
+                    .width(Math.max(1, GENERIC_LINE_WEIGHT-i)); // Slight thinning as time goes on
             Polyline line = gMap.addPolyline(options);
             curLines.add(line);
         }
     }
 
-    private void drawAncestorLines(Event event, Person person, int weight) {
+    private void drawFamilyTreeLines(Event event, Person person, int weight) {
         if (person.getFatherID() != null) {
-            Event fatherEvent = cache.findEarliestEvent(person.getFatherID());
+            Event fatherEvent = cache.findEarliestFilteredEvent(person.getFatherID());
             if (fatherEvent != null) {
                 drawAncestorLine(event, fatherEvent, weight);
-                drawAncestorLines(fatherEvent, cache.getPersonByID(person.getFatherID()), Math.max(1, weight-2));
+                drawFamilyTreeLines(fatherEvent, cache.getPersonByID(person.getFatherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight - ANCESTOR_LINE_WEIGHT_STEP));
             }
         }
         if (person.getMotherID() != null) {
-            Event motherEvent = cache.findEarliestEvent(person.getMotherID());
+            Event motherEvent = cache.findEarliestFilteredEvent(person.getMotherID());
             if (motherEvent != null) {
                 drawAncestorLine(event, motherEvent, weight);
-                drawAncestorLines(motherEvent, cache.getPersonByID(person.getMotherID()), Math.max(1, weight-2));
+                drawFamilyTreeLines(motherEvent, cache.getPersonByID(person.getMotherID()), Math.max(ANCESTOR_LINE_WEIGHT_MIN, weight - ANCESTOR_LINE_WEIGHT_STEP));
             }
         }
     }
@@ -234,7 +269,7 @@ public class MapsFragment extends Fragment {
         if (selectedEventPerson.getSpouseID() == null)
             return;
 
-        Event earliestSpouseEvent = cache.findEarliestEvent(selectedEventPerson.getSpouseID());
+        Event earliestSpouseEvent = cache.findEarliestFilteredEvent(selectedEventPerson.getSpouseID());
 
         if (earliestSpouseEvent == null)
             return;
@@ -246,21 +281,35 @@ public class MapsFragment extends Fragment {
                 .add(start)
                 .add(end)
                 .color(getResources().getColor(R.color.spouse_line))
-                .width(10);
+                .width(GENERIC_LINE_WEIGHT);
 
         Polyline line = gMap.addPolyline(options);
 
         this.curLines.add(line);
     }
 
+    public static void clearColors() {
+        eventTypeToColor.clear();
+        currentMarkerHue = MARKER_HUE_START;
+    }
+
     private Float findColor(String eventType) {
         Float color;
         if ((color = eventTypeToColor.get(eventType)) == null) {
-            color = new Random().nextFloat()*360;
+            nextMarkerHue();
+
+            color = currentMarkerHue;
             eventTypeToColor.put(eventType, color);
         }
 
         return color;
+    }
+
+    private static void nextMarkerHue() {
+        currentMarkerHue += MARKER_HUE_STEP;
+        if (currentMarkerHue > 359) {
+            currentMarkerHue = 0f;
+        }
     }
 
     private void setUpFields(View view) {
@@ -304,7 +353,7 @@ public class MapsFragment extends Fragment {
     }
 
     private void addMarkers(String selectedEventID) {
-        for (Event e : cache.getEvents()) {
+        for (Event e : cache.getFilteredEvents()) {
             LatLng location = new LatLng(e.getLatitude(), e.getLongitude());
 
             Float color = findColor(e.getEventType());
@@ -318,7 +367,8 @@ public class MapsFragment extends Fragment {
                 marker.setTag(e);
 
             // Move to the selected event
-            if (e.getEventID().equals(selectedEventID)) {
+            if (selectedEventID != null &&
+                    e.getEventID().equals(selectedEventID)) {
                 selectEvent(e);
             }
 

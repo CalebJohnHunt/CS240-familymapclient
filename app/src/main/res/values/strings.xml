@@ -33,4 +33,21 @@
     <string name="search">Search</string>
     <string name="settings">Settings</string>
 
+    <string name="settingsLifeStoryTopText">Life Story Lines</string>
+    <string name="settingsLifeStoryBottomText">SHOW LIFE STORY LINES</string>
+    <string name="settingsFamilyTreeTopText">Family Tree Lines</string>
+    <string name="settingsFamilyTreeBottomText">SHOW FAMILY TREE LINES</string>
+    <string name="settingsSpouseTopText">Spouse Lines</string>
+    <string name="settingsSpouseBottomText">SHOW SPOUSE LINES</string>
+    <string name="settingsFatherTopText">Father\'s Side</string>
+    <string name="settingsFatherBottomText">FILTER BY FATHER\'S SIDE OF FAMILY</string>
+    <string name="settingsMotherTopText">Mother\'s Side</string>
+    <string name="settingsMotherBottomText">FILTER BY MOTHER\'S SIDE OF FAMILY</string>
+    <string name="settingsMaleTopText">Male Events</string>
+    <string name="settingsMaleBottomText">FILTER EVENTS BASED ON GENDER</string>
+    <string name="settingsFemaleTopText">Female Events</string>
+    <string name="settingsFemaleBottomText">FILTER EVENTS BASED ON GENDER</string>
+    <string name="settingsLogoutTopText">Logout</string>
+    <string name="settingsLogoutBottomText">RETURN TO LOGIN SCREEN</string>
+
 </resources>

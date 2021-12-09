@@ -8,8 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.util.concurrent.ExecutorService;
@@ -73,13 +70,9 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         setUpFields(view);
 
-        signIn.setOnClickListener(l -> {
-            attemptSignIn(true);
-        });
+        signIn.setOnClickListener(l -> attemptSignIn(true));
 
-        register.setOnClickListener(l -> {
-            attemptSignIn(false);
-        });
+        register.setOnClickListener(l -> attemptSignIn(false));
 
         return view;
     }
@@ -102,17 +95,18 @@ public class LoginFragment extends Fragment {
                             String familyJSON = bundle.getString(FAMILY_ARRAY_KEY, "");
                             Person[] family   = (Person[]) JSONHandler.jsonToObject(familyJSON, Person[].class);
                             cache.addPeople(family);
+                            cache.organizeAncestors(personID);
                             Log.d("LoginFragment: getData", "Added family to the cache");
 
                             String eventsJSON = bundle.getString(EVENTS_ARRAY_KEY, "");
                             Event[]  events   = (Event[]) JSONHandler.jsonToObject(eventsJSON, Event[].class);
-                            cache.addEvents(personID, events);
+                            cache.addEvents(events);
                             Log.d("LoginFragment: getData", "Added events to the cache");
 
-                            Person user = cache.getPersonByID(personID);
 
                             // For Login assignment, not necessary for the client
-//                            Toast.makeText(getContext(), user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
+                            ////  Person user = cache.getPersonByID(personID);
+                            ////  Toast.makeText(getContext(), user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
 
                             if (listener != null)
                                 listener.notifyDone();
@@ -281,16 +275,12 @@ public class LoginFragment extends Fragment {
 
                     signIn.setEnabled(true);
 
-                    if (!(firstName.getText().toString().equals("")  ||
+                    // Are these fields non-empty?
+                    register.setEnabled(!(firstName.getText().toString().equals("") ||
                             lastName.getText().toString().equals("") ||
-                            email.getText().toString().equals("")    ||
-                            gender.getCheckedRadioButtonId() == -1)
-                    ) {
+                            email.getText().toString().equals("") ||
+                            gender.getCheckedRadioButtonId() == -1));
 
-                        register.setEnabled(true);
-                    } else {
-                        register.setEnabled(false);
-                    }
                 } else {
                     signIn.setEnabled(false);
                     register.setEnabled(false);
