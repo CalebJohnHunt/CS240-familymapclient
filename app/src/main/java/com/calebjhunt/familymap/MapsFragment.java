@@ -160,7 +160,9 @@ public class MapsFragment extends Fragment {
                     gMap.clear();
 
                 addMarkers(null);
-                selectEvent(cache.getEventByID(selectedEventID));
+                Event selectedEvent = cache.getEventByID(selectedEventID);
+                if (cache.isEventInFilter(selectedEvent))
+                    selectEvent(selectedEvent);
             }
         }
     }
@@ -299,11 +301,11 @@ public class MapsFragment extends Fragment {
 
     private Float findColor(String eventType) {
         Float color;
-        if ((color = eventTypeToColor.get(eventType)) == null) {
+        if ((color = eventTypeToColor.get(eventType.toLowerCase(Locale.ROOT))) == null) {
             nextMarkerHue();
 
             color = currentMarkerHue;
-            eventTypeToColor.put(eventType, color);
+            eventTypeToColor.put(eventType.toLowerCase(Locale.ROOT), color);
         }
 
         return color;
